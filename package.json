@@ -1,0 +1,21 @@
+{
+	"name": "@giselles-ai/sandbox-volume",
+	"module": "src/index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "tsup",
+		"typecheck": "tsc --noEmit",
+		"test": "bun test"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"@types/node": "25.5.0",
+		"@vercel/blob": "2.3.1",
+		"tsup": "8.5.1",
+		"typescript": "5.9.3"
+	},
+	"peerDependencies": {
+		"@vercel/sandbox": "1.8.1"
+	}
+}
