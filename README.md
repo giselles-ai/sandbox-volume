@@ -1,6 +1,37 @@
 # @giselles-ai/sandbox-volume
 
-Persistent workspace synchronization for `@vercel/sandbox`.
+Persistent workspace synchronization for [@vercel/sandbox](https://github.com/vercel/sandbox).
+
+```ts
+import { Sandbox } from "@vercel/sandbox";
+import {
+  SandboxVolume,
+  InMemoryStorageAdapter,
+} from "@giselles-ai/sandbox-volume";
+
+const adapter = new VercelBlobStorageAdapter();
+const volume = await SandboxVolume.create({
+  key: "sandbox-volume",
+  adapter,
+  include: ["src/**", "package.json"],
+  exclude: [".sandbox/**/*", "dist/**"],
+});
+
+const initialSandbox = await Sandbox.create();
+await volume.mount(initialSandbox, async () => {
+  await initialSandbox.runCommand("bash", [
+    "-lc",
+    "mkdir workspace && echo 'hello!' > workspace/notes.md",
+  ]);
+});
+
+
+const anotherSandbox = await Sandbox.create();
+await anotherSandbox.mount(anotherSandbox, async () => {
+  await anotherSandbox.runCommand("bash", ["-lc", "cat workspace/notes.md"]);
+  // => hello!
+});
+```
 
 `sandbox-volume` is not a filesystem mount and not a VM snapshot layer.
 It is a **transactional workspace sync**:
@@ -38,32 +69,6 @@ import {
 
 Runtime tests and examples should use this import shape so behavior is validated against the
 published API surface, not internal module paths.
-
-## Quick start
-
-```ts
-import { Sandbox } from "@vercel/sandbox";
-import {
-  SandboxVolume,
-  InMemoryStorageAdapter,
-} from "@giselles-ai/sandbox-volume";
-
-const sandbox = await Sandbox.create({ runtime: "node24" });
-const adapter = new InMemoryStorageAdapter();
-const volume = await SandboxVolume.create({
-  key: "repos/my-app",
-  adapter,
-  include: ["src/**", "package.json"],
-  exclude: [".sandbox/**/*", "dist/**"],
-});
-
-await volume.mount(sandbox, async () => {
-  await sandbox.runCommand("bash", [
-    "-lc",
-    "mkdir -p /vercel/sandbox/workspace && printf 'hello\\n' > /vercel/sandbox/workspace/notes.md",
-  ]);
-});
-```
 
 `mount()` runs your callback, then commits file changes automatically when the callback
 resolves. If the callback throws, it still closes and releases locks but does not commit.
