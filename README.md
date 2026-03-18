@@ -36,10 +36,7 @@ This structure is implemented with the following API:
 
 ```ts
 import { Sandbox } from "@vercel/sandbox";
-import {
-  SandboxVolume,
-  VercelBlobStorageAdapter,
-} from "@giselles-ai/sandbox-volume";
+import { SandboxVolume, VercelBlobStorageAdapter } from "@giselles-ai/sandbox-volume";
 
 const adapter = new VercelBlobStorageAdapter();
 const volume = await SandboxVolume.create({
@@ -54,7 +51,6 @@ await volume.mount(initialSandbox, async () => {
   await initialSandbox.runCommand("mkdir", ["workspace"]);
   await initialSandbox.runCommand("echo", ["hello!", ">", "workspace/notes.md"]);
 });
-
 
 const anotherSandbox = await Sandbox.create();
 await anotherSandbox.mount(anotherSandbox, async () => {
@@ -83,17 +79,17 @@ All public types and implementations are exported from the package root.
 
 ```ts
 import {
-	SandboxVolume,
-	InMemoryStorageAdapter,
-	createMemoryStorageAdapter,
-	createVercelBlobStorageAdapter,
-	VercelBlobStorageAdapter,
-	WorkspaceLockError,
-	WorkspaceLockConflictError,
-	WorkspaceLockAcquisitionError,
-	WorkspaceLockReleaseError,
-	WorkspaceLockStaleError,
-	ManifestDiff,
+  SandboxVolume,
+  InMemoryStorageAdapter,
+  createMemoryStorageAdapter,
+  createVercelBlobStorageAdapter,
+  VercelBlobStorageAdapter,
+  WorkspaceLockError,
+  WorkspaceLockConflictError,
+  WorkspaceLockAcquisitionError,
+  WorkspaceLockReleaseError,
+  WorkspaceLockStaleError,
+  ManifestDiff,
 } from "@giselles-ai/sandbox-volume";
 ```
 
@@ -201,10 +197,7 @@ Tradeoff:
 tests/examples.
 
 ```ts
-import {
-  InMemoryStorageAdapter,
-  createMemoryStorageAdapter,
-} from "@giselles-ai/sandbox-volume";
+import { InMemoryStorageAdapter, createMemoryStorageAdapter } from "@giselles-ai/sandbox-volume";
 
 const adapter = new InMemoryStorageAdapter();
 // or
@@ -217,10 +210,7 @@ This package now includes a concrete Vercel Blob adapter, suitable for lightweig
 persistent workspace storage in Vercel deployments.
 
 ```ts
-import {
-  SandboxVolume,
-  createVercelBlobStorageAdapter,
-} from "@giselles-ai/sandbox-volume";
+import { SandboxVolume, createVercelBlobStorageAdapter } from "@giselles-ai/sandbox-volume";
 
 const adapter = createVercelBlobStorageAdapter({
   token: process.env.BLOB_READ_WRITE_TOKEN,
@@ -275,6 +265,7 @@ When integrating lock behavior in application code, export all of the lock error
 to distinguish expected conflict/retry cases from release failures.
 
 `mount` and transaction close paths release locks in `finally`, then:
+
 - If the callback/commit path fails and lock release also fails, the callback/commit error
   wins (cleanup status is surfaced only when the callback/commit succeeds).
 - If callback/commit succeeds, release errors are thrown to callers.

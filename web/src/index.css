@@ -7,9 +7,9 @@
   --code-bg: rgba(148, 163, 184, 0.12);
   --accent: #7f8ea3;
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
-  --sans: 'Neue Haas Grotesk Text', 'Inter', 'Hiragino Sans', sans-serif;
-  --heading: 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
-  --mono: 'SFMono-Regular', 'SF Mono', 'Cascadia Code', monospace;
+  --sans: "Neue Haas Grotesk Text", "Inter", "Hiragino Sans", sans-serif;
+  --heading: "Iowan Old Style", "Georgia", "Times New Roman", serif;
+  --mono: "SFMono-Regular", "SF Mono", "Cascadia Code", monospace;
 
   font: 18px/1.7 var(--sans);
   letter-spacing: 0.01em;
