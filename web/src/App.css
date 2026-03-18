@@ -1,0 +1,70 @@
+.page {
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 64px 0 88px;
+}
+
+.hero {
+  margin-bottom: 52px;
+  padding: 0;
+}
+
+.eyebrow {
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 52rem;
+  font-size: 1.05rem;
+}
+
+.readme-card {
+  padding: 0;
+  text-align: left;
+}
+
+.readme-card > * + * {
+  margin-top: 18px;
+}
+
+.readme-card > h2 {
+  margin-top: 56px;
+}
+
+.readme-card ul,
+.readme-card ol {
+  padding-left: 1.4rem;
+}
+
+.readme-card li + li {
+  margin-top: 10px;
+}
+
+.code-block {
+  margin: 26px 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border-radius: 20px;
+  background: var(--code-bg);
+  box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.04);
+}
+
+@media (max-width: 768px) {
+  .page {
+    width: min(100%, calc(100% - 20px));
+    padding: 28px 0 44px;
+  }
+
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .readme-card > h2 {
+    margin-top: 40px;
+  }
+}

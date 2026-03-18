@@ -1,0 +1,91 @@
+:root {
+  --text: #9ba6b5;
+  --text-h: #eef2f7;
+  --bg: #0f141b;
+  --panel: rgba(255, 255, 255, 0.04);
+  --border: rgba(226, 232, 240, 0.08);
+  --code-bg: rgba(148, 163, 184, 0.12);
+  --accent: #7f8ea3;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  --sans: 'Neue Haas Grotesk Text', 'Inter', 'Hiragino Sans', sans-serif;
+  --heading: 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
+  --mono: 'SFMono-Regular', 'SF Mono', 'Cascadia Code', monospace;
+
+  font: 18px/1.7 var(--sans);
+  letter-spacing: 0.01em;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(148, 163, 184, 0.08), transparent 24%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.06), transparent 18%),
+    linear-gradient(180deg, #111821 0%, #0b1016 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: var(--text-h);
+  font-family: var(--heading);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+code {
+  padding: 0.14rem 0.4rem;
+  border-radius: 0.45rem;
+  background: rgba(226, 232, 240, 0.08);
+  color: var(--text-h);
+  font-size: 0.92em;
+}
+
+strong {
+  color: var(--text-h);
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 16px;
+  }
+}
