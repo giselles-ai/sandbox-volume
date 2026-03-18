@@ -19,19 +19,24 @@ const volume = await SandboxVolume.create({
 
 const initialSandbox = await Sandbox.create();
 await volume.mount(initialSandbox, async () => {
-  await initialSandbox.runCommand("bash", [
-    "-lc",
-    "mkdir workspace && echo 'hello!' > workspace/notes.md",
-  ]);
+  await initialSandbox.runCommand("mkdir", ["workspace"]);
+  await initialSandbox.runCommand("echo", ["hello!", ">", "workspace/notes.md"]);
 });
 
 
 const anotherSandbox = await Sandbox.create();
 await anotherSandbox.mount(anotherSandbox, async () => {
-  await anotherSandbox.runCommand("bash", ["-lc", "cat workspace/notes.md"]);
+  await anotherSandbox.runCommand("cat", ["workspace/notes.md"]);
   // => hello!
 });
 ```
+
+Vercel Sandbox already provides safe, ephemeral execution.
+What we wanted to add was just one thin layer on top: **workspace continuity**.
+
+Snapshots can resume a whole sandbox, but long-lived workspace state is a different problem.
+By persisting workspace files to external storage such as Vercel Blob, files can outlive any
+single sandbox lifecycle and remain readable or writable even when no sandbox is running.
 
 `sandbox-volume` is not a filesystem mount and not a VM snapshot layer.
 It is a **transactional workspace sync**:
