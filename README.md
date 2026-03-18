@@ -5,7 +5,7 @@ Persistent workspace synchronization for `@vercel/sandbox`.
 `sandbox-volume` is not a filesystem mount and not a VM snapshot layer.
 It is a **transactional workspace sync**:
 
-1. load persisted workspace files into a sandbox path (default `/workspace`)
+1. load persisted workspace files into a sandbox path (default `/vercel/sandbox/workspace`)
 2. run your code
 3. diff current files against the last saved manifest
 4. optionally save manifest + files back through a pluggable adapter
@@ -58,7 +58,10 @@ const volume = await SandboxVolume.create({
 });
 
 await volume.mount(sandbox, async () => {
-  await sandbox.runCommand("bash", ["-lc", "printf 'hello\\n' > /workspace/notes.md"]);
+  await sandbox.runCommand("bash", [
+    "-lc",
+    "mkdir -p /vercel/sandbox/workspace && printf 'hello\\n' > /vercel/sandbox/workspace/notes.md",
+  ]);
 });
 ```
 
@@ -84,7 +87,7 @@ pnpm -F @giselles-ai/sandbox-volume example
 - `SandboxVolume.create(options)`
   - `adapter`: `StorageAdapter` (required)
   - `key`: stable workspace identifier (string)
-  - `path` (optional): mount path, default `"/workspace"`
+  - `path` (optional): mount path, default `"/vercel/sandbox/workspace"`
   - `defaultLockMode` (optional): `"none" | "exclusive" | "shared"`
   - `include` (optional): glob include list, defaults to all files
   - `exclude` (optional): glob exclude list, applied after `include`

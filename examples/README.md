@@ -1,5 +1,3 @@
-# Examples
-
 `examples/index.ts` is a runnable example that exercises the public API of `@giselles-ai/sandbox-volume` against a real `@vercel/sandbox` instance.
 
 It walks through the following flows:
@@ -64,7 +62,7 @@ On success, each phase prints diff / commit results as JSON to stdout, followed 
 
 Highlights:
 
-- phase 1: creates `/workspace/package.json` and `/workspace/src/index.ts`, then auto-commits when `mount()` finishes
+- phase 1: creates `/vercel/sandbox/workspace/package.json` and `/vercel/sandbox/workspace/src/index.ts`, then auto-commits when `mount()` finishes
 - phase 2: hydrates an existing workspace, then shows update, create, and delete changes through `diff()` and `commit()`
 - phase 3: verifies a no-op `commitAll()` and a forced `rewrite()`
 

@@ -72,9 +72,11 @@ describe("Workspace hydration", () => {
 		});
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
-		expect(sandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(sandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(sandbox.writtenFiles).toHaveLength(1);
-		expect(sandbox.writtenFiles[0]?.path).toBe("/workspace/src/index.ts");
+		expect(sandbox.writtenFiles[0]?.path).toBe(
+			"/vercel/sandbox/workspace/src/index.ts",
+		);
 		expect(new TextDecoder().decode(sandbox.writtenFiles[0]?.content)).toBe(
 			"console.log(1)",
 		);
@@ -124,9 +126,11 @@ describe("Workspace hydration", () => {
 
 		await volume.begin(sandbox as unknown as Sandbox);
 
-		expect(sandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(sandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(sandbox.writtenFiles).toHaveLength(1);
-		expect(sandbox.writtenFiles[0]?.path).toBe("/workspace/src/index.ts");
+		expect(sandbox.writtenFiles[0]?.path).toBe(
+			"/vercel/sandbox/workspace/src/index.ts",
+		);
 		expect(new TextDecoder().decode(sandbox.writtenFiles[0]?.content)).toBe(
 			"console.log(1)",
 		);
@@ -159,8 +163,10 @@ describe("Workspace hydration", () => {
 
 		await volume.begin(sandbox as unknown as Sandbox);
 
-		expect(sandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(sandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(sandbox.writtenFiles).toHaveLength(1);
-		expect(sandbox.writtenFiles[0]?.path).toBe("/workspace/src/index.ts");
+		expect(sandbox.writtenFiles[0]?.path).toBe(
+			"/vercel/sandbox/workspace/src/index.ts",
+		);
 	});
 });

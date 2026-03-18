@@ -212,7 +212,7 @@ describe("mount", () => {
 			sandbox as unknown as Sandbox,
 			async (txSandbox) => {
 				sandbox.setFileState({
-					"/workspace/app.ts": "console.log('ok')",
+					"/vercel/sandbox/workspace/app.ts": "console.log('ok')",
 				});
 				expect(txSandbox).toBeDefined();
 				return "result";

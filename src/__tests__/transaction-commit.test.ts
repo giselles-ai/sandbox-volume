@@ -223,7 +223,7 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(2)",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(2)",
 		});
 
 		const result = await tx.commit();
@@ -272,8 +272,8 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(1)",
-			"/workspace/src/new.ts": "new file",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(1)",
+			"/vercel/sandbox/workspace/src/new.ts": "new file",
 		});
 
 		const result = await tx.commit();
@@ -323,7 +323,7 @@ describe("workspace transaction commit", () => {
 				return {
 					exitCode: 0,
 					stdout: async () =>
-						"/workspace/src/index.ts\0/workspace/src/new.ts\0",
+						"/vercel/sandbox/workspace/src/index.ts\0/vercel/sandbox/workspace/src/new.ts\0",
 				};
 			}
 
@@ -347,8 +347,8 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(1)",
-			"/workspace/src/new.ts": "created",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(1)",
+			"/vercel/sandbox/workspace/src/new.ts": "created",
 		});
 
 		const result = await tx.commit();
@@ -400,7 +400,7 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(1)",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(1)",
 		});
 
 		const result = await tx.commit();
@@ -454,7 +454,7 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(1)",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(1)",
 		});
 
 		const result = await tx.commit();
@@ -491,8 +491,8 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(2)",
-			"/workspace/coverage/out.json": "mutated",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(2)",
+			"/vercel/sandbox/workspace/coverage/out.json": "mutated",
 		});
 
 		const result = await tx.commit();
@@ -543,7 +543,7 @@ describe("workspace transaction commit", () => {
 		const tx = await volume.begin(sandbox as unknown as Sandbox);
 
 		sandbox.setFileState({
-			"/workspace/src/index.ts": "console.log(1)",
+			"/vercel/sandbox/workspace/src/index.ts": "console.log(1)",
 		});
 
 		const result = await tx.commit();

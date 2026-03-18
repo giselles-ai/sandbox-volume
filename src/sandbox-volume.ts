@@ -10,6 +10,8 @@ import type {
 	WorkspaceTransaction,
 } from "./types";
 
+const DEFAULT_MOUNT_PATH = "/vercel/sandbox/workspace";
+
 export class SandboxVolume {
 	readonly #options: SandboxVolumeOptions;
 
@@ -38,7 +40,7 @@ export class SandboxVolume {
 	}
 
 	get path(): string {
-		return this.#options.path ?? "/workspace";
+		return this.#options.path ?? DEFAULT_MOUNT_PATH;
 	}
 
 	async begin(

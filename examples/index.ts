@@ -8,6 +8,7 @@ import { Sandbox } from "@vercel/sandbox";
 
 const adapter = createMemoryStorageAdapter();
 const key = "example/manual-volume";
+const workspacePath = "/vercel/sandbox/workspace";
 
 function inspectFileState(
 	result: WorkspaceCommitResult | WorkspaceDiff,
@@ -28,7 +29,14 @@ async function stopIfPossible(sandbox: Sandbox): Promise<void> {
 	}
 
 	try {
-		await stop.call(sandbox);
+		await Promise.race([
+			stop.call(sandbox),
+			new Promise((_, reject) => {
+				setTimeout(() => {
+					reject(new Error("sandbox.stop() timed out after 10s"));
+				}, 10_000);
+			}),
+		]);
 	} catch (error) {
 		console.warn("sandbox.stop() failed:", error);
 	}
@@ -59,6 +67,7 @@ async function main() {
 	const volume = await SandboxVolume.create({
 		adapter,
 		key,
+		path: workspacePath,
 		include: ["**/*"],
 		exclude: [".sandbox/**"],
 	});
@@ -72,11 +81,11 @@ async function main() {
 
 			await txSandbox.writeFiles([
 				{
-					path: "/workspace/package.json",
+					path: `${workspacePath}/package.json`,
 					content: Buffer.from('{"name":"manual-volume-demo"}\n'),
 				},
 				{
-					path: "/workspace/src/index.ts",
+					path: `${workspacePath}/src/index.ts`,
 					content: Buffer.from('export const message = "hello";\n'),
 				},
 			]);
@@ -103,17 +112,17 @@ async function main() {
 
 		await hydratedSandbox.writeFiles([
 			{
-				path: "/workspace/src/index.ts",
+				path: `${workspacePath}/src/index.ts`,
 				content: Buffer.from('export const message = "updated";\n'),
 			},
 			{
-				path: "/workspace/notes.md",
+				path: `${workspacePath}/notes.md`,
 				content: Buffer.from("updated note\n"),
 			},
 		]);
 		await runShell(hydratedSandbox, "bash", [
 			"-lc",
-			"rm -f /workspace/package.json",
+			`rm -f ${workspacePath}/package.json`,
 		]);
 
 		const changedDiff = await tx.diff();

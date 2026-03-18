@@ -81,16 +81,18 @@ describe("memory adapter integration", () => {
 		const firstSandbox = createMockSandbox();
 		await volume.mount(firstSandbox as unknown as Sandbox, async () => {
 			firstSandbox.setFileState({
-				"/workspace/src/index.ts": "console.log('first')",
+				"/vercel/sandbox/workspace/src/index.ts": "console.log('first')",
 			});
 		});
 
 		const secondSandbox = createMockSandbox();
 		const tx2 = await volume.begin(secondSandbox as unknown as Sandbox);
 
-		expect(secondSandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(secondSandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(secondSandbox.writtenFiles).toHaveLength(1);
-		expect(secondSandbox.writtenFiles[0]?.path).toBe("/workspace/src/index.ts");
+		expect(secondSandbox.writtenFiles[0]?.path).toBe(
+			"/vercel/sandbox/workspace/src/index.ts",
+		);
 
 		secondSandbox.setFileState({});
 		const secondCommit = await tx2.commit();
@@ -102,7 +104,7 @@ describe("memory adapter integration", () => {
 		const thirdSandbox = createMockSandbox();
 		const tx3 = await volume.begin(thirdSandbox as unknown as Sandbox);
 
-		expect(thirdSandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(thirdSandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(thirdSandbox.writtenFiles).toHaveLength(0);
 
 		await tx3.close();
@@ -120,10 +122,10 @@ describe("memory adapter integration", () => {
 		const firstSandbox = createMockSandbox();
 		await volume.mount(firstSandbox as unknown as Sandbox, async () => {
 			firstSandbox.setFileState({
-				"/workspace/package.json": '{"name":"include-exclude"}',
-				"/workspace/src/index.ts": "console.log('first')",
-				"/workspace/src/generated/tmp.ts": "ignored",
-				"/workspace/README.md": "should be ignored",
+				"/vercel/sandbox/workspace/package.json": '{"name":"include-exclude"}',
+				"/vercel/sandbox/workspace/src/index.ts": "console.log('first')",
+				"/vercel/sandbox/workspace/src/generated/tmp.ts": "ignored",
+				"/vercel/sandbox/workspace/README.md": "should be ignored",
 			});
 		});
 
@@ -136,17 +138,18 @@ describe("memory adapter integration", () => {
 
 		const secondSandbox = createMockSandbox();
 		const tx2 = await volume.begin(secondSandbox as unknown as Sandbox);
-		expect(secondSandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(secondSandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(secondSandbox.writtenFiles.map((file) => file.path).sort()).toEqual([
-			"/workspace/package.json",
-			"/workspace/src/index.ts",
+			"/vercel/sandbox/workspace/package.json",
+			"/vercel/sandbox/workspace/src/index.ts",
 		]);
 
 		secondSandbox.setFileState({
-			"/workspace/package.json": '{"name":"include-exclude","version":1}',
-			"/workspace/src/index.ts": "console.log('second')",
-			"/workspace/src/new.ts": "created",
-			"/workspace/src/generated/tmp.ts": "still ignored",
+			"/vercel/sandbox/workspace/package.json":
+				'{"name":"include-exclude","version":1}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('second')",
+			"/vercel/sandbox/workspace/src/new.ts": "created",
+			"/vercel/sandbox/workspace/src/generated/tmp.ts": "still ignored",
 		});
 
 		const secondCommit = await tx2.commit();
@@ -173,8 +176,9 @@ describe("memory adapter integration", () => {
 		const thirdSandbox = createMockSandbox();
 		const tx3 = await volume.begin(thirdSandbox as unknown as Sandbox);
 		thirdSandbox.setFileState({
-			"/workspace/package.json": '{"name":"include-exclude","version":1}',
-			"/workspace/src/new.ts": "created",
+			"/vercel/sandbox/workspace/package.json":
+				'{"name":"include-exclude","version":1}',
+			"/vercel/sandbox/workspace/src/new.ts": "created",
 		});
 
 		const thirdCommit = await tx3.commit();
@@ -213,9 +217,9 @@ describe("memory adapter integration", () => {
 			bootstrapSandbox as unknown as Sandbox,
 			async () => {
 				bootstrapSandbox.setFileState({
-					"/workspace/package.json": '{"name":"caveat"}',
-					"/workspace/src/index.ts": "console.log('kept')",
-					"/workspace/dist/out.js": "old artifact",
+					"/vercel/sandbox/workspace/package.json": '{"name":"caveat"}',
+					"/vercel/sandbox/workspace/src/index.ts": "console.log('kept')",
+					"/vercel/sandbox/workspace/dist/out.js": "old artifact",
 				});
 			},
 		);
@@ -239,8 +243,8 @@ describe("memory adapter integration", () => {
 			scopedSandbox as unknown as Sandbox,
 		);
 		scopedSandbox.setFileState({
-			"/workspace/package.json": '{"name":"caveat"}',
-			"/workspace/src/index.ts": "console.log('kept')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"caveat"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('kept')",
 		});
 
 		const result = await scopedTx.commit();
@@ -263,8 +267,8 @@ describe("memory adapter integration", () => {
 
 		const rewrittenSandbox = createMockSandbox();
 		rewrittenSandbox.setFileState({
-			"/workspace/package.json": '{"name":"caveat"}',
-			"/workspace/src/index.ts": "console.log('kept')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"caveat"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('kept')",
 		});
 		const rewriteResult = await scopedVolume.rewrite(
 			rewrittenSandbox as unknown as Sandbox,
@@ -285,8 +289,8 @@ describe("memory adapter integration", () => {
 
 		const resyncSandbox = createMockSandbox();
 		resyncSandbox.setFileState({
-			"/workspace/package.json": '{"name":"caveat"}',
-			"/workspace/src/index.ts": "console.log('kept')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"caveat"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('kept')",
 		});
 		const resyncResult = await scopedVolume.resync(
 			resyncSandbox as unknown as Sandbox,
@@ -317,22 +321,25 @@ describe("memory adapter integration", () => {
 		const sandbox = createMockSandbox();
 		await volume.mount(sandbox as unknown as Sandbox, async () => {
 			sandbox.setFileState({
-				"/workspace/package.json": '{"name":"public"}',
-				"/workspace/src/index.ts": "console.log('public')",
-				"/workspace/src/generated/cache.ts": "ignored",
+				"/vercel/sandbox/workspace/package.json": '{"name":"public"}',
+				"/vercel/sandbox/workspace/src/index.ts": "console.log('public')",
+				"/vercel/sandbox/workspace/src/generated/cache.ts": "ignored",
 			});
 		});
 
 		const verifySandbox = createMockSandbox();
 		const tx = await volume.begin(verifySandbox as unknown as Sandbox);
-		expect(verifySandbox.mkdirCalls).toEqual(["/workspace"]);
+		expect(verifySandbox.mkdirCalls).toEqual(["/vercel/sandbox/workspace"]);
 		expect(verifySandbox.writtenFiles.map((file) => file.path).sort()).toEqual(
-			["/workspace/package.json", "/workspace/src/index.ts"].sort(),
+			[
+				"/vercel/sandbox/workspace/package.json",
+				"/vercel/sandbox/workspace/src/index.ts",
+			].sort(),
 		);
 
 		verifySandbox.setFileState({
-			"/workspace/package.json": '{"name":"public"}',
-			"/workspace/src/index.ts": "console.log('public')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"public"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('public')",
 		});
 
 		const commit = await tx.commit();
@@ -342,8 +349,8 @@ describe("memory adapter integration", () => {
 
 		const rewriteSandbox = createMockSandbox();
 		rewriteSandbox.setFileState({
-			"/workspace/package.json": '{"name":"public"}',
-			"/workspace/src/index.ts": "console.log('public')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"public"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('public')",
 		});
 
 		const rewrite = await volume.rewrite(rewriteSandbox as unknown as Sandbox);
@@ -352,8 +359,8 @@ describe("memory adapter integration", () => {
 
 		const commitOnlySandbox = createMockSandbox();
 		commitOnlySandbox.setFileState({
-			"/workspace/package.json": '{"name":"public"}',
-			"/workspace/src/index.ts": "console.log('public')",
+			"/vercel/sandbox/workspace/package.json": '{"name":"public"}',
+			"/vercel/sandbox/workspace/src/index.ts": "console.log('public')",
 		});
 		const commitAllResult = await volume.commitAll(
 			commitOnlySandbox as unknown as Sandbox,
