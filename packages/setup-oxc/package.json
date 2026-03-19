@@ -1,0 +1,24 @@
+{
+  "name": "setup-oxc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Interactive setup wizard for oxlint and oxfmt.",
+  "type": "module",
+  "packageManager": "bun@1.3.5",
+  "bin": {
+    "setup-oxc": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  }
+}
